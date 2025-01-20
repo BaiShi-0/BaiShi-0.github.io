@@ -1,5 +1,106 @@
 <?xml version='1.0' encoding='UTF-8'?>
-<rss xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/" version="2.0"><channel><title>随记</title><link>https://BaiShi-0.github.io</link><description>听风 等雨</description><copyright>随记</copyright><docs>http://www.rssboard.org/rss-specification</docs><generator>python-feedgen</generator><image><url>https://raw.githubusercontent.com/BaiShi-0/BaiShi-0.github.io/main/img/head.jpg</url><title>avatar</title><link>https://BaiShi-0.github.io</link></image><lastBuildDate>Mon, 20 Jan 2025 12:49:09 +0000</lastBuildDate><managingEditor>随记</managingEditor><ttl>60</ttl><webMaster>随记</webMaster><item><title>Docker 安装</title><link>https://BaiShi-0.github.io/post/Docker%20-an-zhuang.html</link><description>## 更新包管理器
+<rss xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/" version="2.0"><channel><title>随记</title><link>https://BaiShi-0.github.io</link><description>听风 等雨</description><copyright>随记</copyright><docs>http://www.rssboard.org/rss-specification</docs><generator>python-feedgen</generator><image><url>https://raw.githubusercontent.com/BaiShi-0/BaiShi-0.github.io/main/img/head.jpg</url><title>avatar</title><link>https://BaiShi-0.github.io</link></image><lastBuildDate>Mon, 20 Jan 2025 13:01:16 +0000</lastBuildDate><managingEditor>随记</managingEditor><ttl>60</ttl><webMaster>随记</webMaster><item><title>Docker 使用</title><link>https://BaiShi-0.github.io/post/Docker%20-shi-yong.html</link><description># 查看
+
+## 查看运行中容器
+
+```bash
+docker ps
+```
+
+
+
+## 查看所有容器
+
+```bash
+docker ps -a
+```
+
+![屏幕截图](https://github.com/BaiShi-0/BaiShi-0.github.io/raw/main/img/%232-1.png)
+
+
+
+## 查看镜像
+
+```bash
+docker images
+```
+
+![image](https://github.com/BaiShi-0/BaiShi-0.github.io/raw/main/img/%232-2.png)
+
+
+
+# 停止容器
+
+```bash
+docker stop 容器名/容器ID
+```
+
+
+
+# 进入容器
+
+## exec
+
+exec生成新终端，使用exit退出时也不会停止容器
+
+```bash
+docker exec -it 容器id /bin/bash
+```
+
+
+
+## attach
+
+attach进入正在运行的终端
+
+如果使用exit退出，容器会停止运行
+
+如果想退出容器但不想容器停止，则按住Ctrl+P+Q退出
+
+```bash
+docker attach 容器id
+```
+
+# 复制文件
+
+```bash
+docker cp 路径1 路径2
+```
+
+&gt; [!note]
+&gt;
+&gt; 路径1:  表示 *本地文件路径* 或 *容器中文件路径*    ./test.txt 或 容器名:文件路径
+&gt;
+&gt; 路径2:  表示 *本地文件夹路径* 或 *容器中文件夹路径* 
+
+
+
+# 删除
+
+## 删除容器
+
+```bash
+docker rm 容器名/容器ID
+```
+
+
+
+## 删除镜像
+
+```bash
+docker rmi 镜像名
+```
+
+
+
+# 查看容器日志
+
+```bash
+docker logs 容器名/容器ID
+```
+
+
+。</description><guid isPermaLink="true">https://BaiShi-0.github.io/post/Docker%20-shi-yong.html</guid><pubDate>Mon, 20 Jan 2025 13:00:50 +0000</pubDate></item><item><title>Docker 安装</title><link>https://BaiShi-0.github.io/post/Docker%20-an-zhuang.html</link><description>## 更新包管理器
 
 ```bash
 sudo apt update
