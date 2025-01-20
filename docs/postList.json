@@ -1,1 +1,1 @@
-{"labelColorDict": {"bug": "#d73a4a", "documentation": "#0075ca", "duplicate": "#cfd3d7", "enhancement": "#a2eeef", "good first issue": "#7057ff", "help wanted": "#008672", "invalid": "#e4e669", "question": "#d876e3", "wontfix": "#ffffff"}}
+{"P1": {"labels": ["Docker"], "postTitle": "Docker \u5b89\u88c5", "postUrl": "post/Docker%20-an-zhuang.html", "createdDate": "2025-01-20", "dateLabelColor": "#0969da"}, "labelColorDict": {"Docker": "#e99695"}}
