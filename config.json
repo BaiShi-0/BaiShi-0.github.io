@@ -1,6 +1,19 @@
 {
-    "title":"随记",
-    "subTitle":"听风 等雨",
-    "avatarUrl":"https://raw.githubusercontent.com/BaiShi-0/BaiShi-0.github.io/main/img/head.jpg",
-    "GMEEK_VERSION":"last"
+    "title": "随记",
+    "subTitle": "听风 等雨",
+    "avatarUrl": "https://raw.githubusercontent.com/BaiShi-0/BaiShi-0.github.io/main/img/head.jpg",
+    "startSite": "01/20/2025",
+    "onePageListNum": 15,
+    "commentLabelColor": "#006b75",
+    "yearColorList": [
+        "#bc4c00",
+        "#0969da",
+        "#1f883d",
+        "#A333D0"
+    ],
+    "i18n": "CN",
+    "bottomText": "> 转载请注明出处 <",
+    "allHead": "<script src='https://blog.meekdai.com/Gmeek/plugins/GmeekVercount.js'></script>",
+    "script": "<script src='https://blog.meekdai.com/Gmeek/plugins/GmeekTOC.js'></script>",
+    "GMEEK_VERSION": "last"
 }
