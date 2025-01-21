@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <link href='https://mirrors.sustech.edu.cn/cdnjs/ajax/libs/Primer/21.0.7/primer.css' rel='stylesheet' />
-    
+    <script src='https://blog.meekdai.com/Gmeek/plugins/GmeekVercount.js'></script>
     <link rel="icon" href="https://raw.githubusercontent.com/BaiShi-0/BaiShi-0.github.io/main/img/head.jpg"><script>
         let theme = localStorage.getItem("meek_theme") || "light";
         document.documentElement.setAttribute("data-color-mode", theme);
@@ -318,7 +318,7 @@ body{box-sizing: border-box;min-width: 200px;max-width: 900px;margin: 20px auto;
 <div class="highlight highlight-source-shell"><pre class="notranslate">docker rmi 镜像名</pre></div>
 <h1>查看容器日志</h1>
 <div class="highlight highlight-source-shell"><pre class="notranslate">docker logs 容器名/容器ID</pre></div></div>
-<div style="font-size:small;margin-top:8px;float:right;"></div>
+<div style="font-size:small;margin-top:8px;float:right;">> 转载请注明出处 <</div>
 
 <button class="btn btn-block" type="button" onclick="openComments()" id="cmButton">评论</button>
 <div class="comments" id="comments"></div>
@@ -333,8 +333,8 @@ body{box-sizing: border-box;min-width: 200px;max-width: 900px;margin: 20px auto;
 var now=new Date();
 document.getElementById("copyrightYear").innerHTML=now.getFullYear();
 
-if(""!=""){
-    var startSite=new Date("");
+if("01/20/2025"!=""){
+    var startSite=new Date("01/20/2025");
     var diff=now.getTime()-startSite.getTime();
     var diffDay=Math.floor(diff/(1000*60*60*24));
     document.getElementById("runday").innerHTML="网站运行"+diffDay+"天"+" • ";
@@ -485,6 +485,6 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 </script>
-
+<script src='https://blog.meekdai.com/Gmeek/plugins/GmeekTOC.js'></script>
 
 </html>
