@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='UTF-8'?>
-<rss xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/" version="2.0"><channel><title>随记</title><link>https://baishiblog.us.kg/</link><description>听风 等雨</description><copyright>随记</copyright><docs>http://www.rssboard.org/rss-specification</docs><generator>python-feedgen</generator><image><url>https://baishiblog.us.kg/img/head.jpg</url><title>avatar</title><link>https://baishiblog.us.kg/</link></image><lastBuildDate>Tue, 21 Jan 2025 06:56:17 +0000</lastBuildDate><managingEditor>随记</managingEditor><ttl>60</ttl><webMaster>随记</webMaster><item><title>Docker 使用</title><link>https://baishiblog.us.kg//post/Docker%20-shi-yong.html</link><description># 查看
+<rss xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/" version="2.0"><channel><title>随记</title><link>https://baishiblog.us.kg/</link><description>听风 等雨</description><copyright>随记</copyright><docs>http://www.rssboard.org/rss-specification</docs><generator>python-feedgen</generator><image><url>https://baishiblog.us.kg/img/head.jpg</url><title>avatar</title><link>https://baishiblog.us.kg/</link></image><lastBuildDate>Tue, 21 Jan 2025 07:01:57 +0000</lastBuildDate><managingEditor>随记</managingEditor><ttl>60</ttl><webMaster>随记</webMaster><item><title>Docker 使用</title><link>https://baishiblog.us.kg//post/Docker%20-shi-yong.html</link><description># 查看
 
 ## 查看运行中容器
 
@@ -15,7 +15,7 @@ docker ps
 docker ps -a
 ```
 
-![屏幕截图](https://github.com/BaiShi-0/BaiShi-0.github.io/raw/main/img/%232-1.png)
+![屏幕截图](https://baishiblog.us.kg/img/%232-1.png)
 
 
 
@@ -25,7 +25,7 @@ docker ps -a
 docker images
 ```
 
-![image](https://github.com/BaiShi-0/BaiShi-0.github.io/raw/main/img/%232-2.png)
+![image](https://baishiblog.us.kg/img/%232-2.png)
 
 
 
