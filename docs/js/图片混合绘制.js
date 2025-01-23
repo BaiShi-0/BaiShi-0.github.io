@@ -33,12 +33,9 @@ canvas.addEventListener('mouseleave', function () {
 canvas.addEventListener('mousemove', function (e) {
     if (image1.src) { // 只在有图片时更新指示器位置
         const rect = canvas.getBoundingClientRect();
-        // 计算缩放比例
-        const scaleX = canvas.width / rect.width;
-        const scaleY = canvas.height / rect.height;
-        // 计算实际坐标
-        const x = (e.clientX - rect.left) * scaleX;
-        const y = (e.clientY - rect.top) * scaleY;
+        // 使用相对于画布的坐标
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
         cursor.style.left = x + 'px';
         cursor.style.top = y + 'px';
     }
@@ -104,10 +101,9 @@ function draw(e) {
     if (!isDrawing || !image2.src) return;
 
     const rect = canvas.getBoundingClientRect();
-    // 计算缩放比例
+    // 在绘制时才需要考虑缩放比例
     const scaleX = canvas.width / rect.width;
     const scaleY = canvas.height / rect.height;
-    // 计算实际坐标
     const x = (e.clientX - rect.left) * scaleX;
     const y = (e.clientY - rect.top) * scaleY;
     const brushSize = parseInt(brushSizeInput.value);
