@@ -1,0 +1,121 @@
+#app {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+#canvas {
+    border: 1px solid #ccc;
+    cursor: none;
+    max-width: 100%;
+    position: relative;
+}
+
+#cursor {
+    width: 10px;
+    height: 10px;
+    border: 2px solid #000;
+    border-radius: 50%;
+    position: absolute;
+    pointer-events: none;
+    transform: translate(-50%, -50%);
+    display: none;
+    z-index: 1000;
+}
+
+.controls {
+    margin: 20px 0;
+    background: #f5f5f5;
+    padding: 20px;
+    border-radius: 8px;
+}
+
+.controls input {
+    margin: 10px 0;
+}
+
+.file-upload {
+    margin: 15px 0;
+}
+
+.file-upload label {
+    display: inline-block;
+    padding: 8px 20px;
+    background: #4CAF50;
+    color: white;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.file-upload label:hover {
+    background: #45a049;
+}
+
+.file-upload input[type="file"] {
+    display: none;
+}
+
+.file-name {
+    margin-left: 10px;
+    color: #666;
+}
+
+.brush-control {
+    background: white;
+    padding: 15px;
+    border-radius: 4px;
+    margin-top: 15px;
+}
+
+.brush-control input[type="range"] {
+    width: 200px;
+    vertical-align: middle;
+}
+
+.brush-size-value {
+    display: inline-block;
+    min-width: 40px;
+    text-align: center;
+    margin-left: 10px;
+    padding: 2px 8px;
+    background: #eee;
+    border-radius: 3px;
+}
+
+.button {
+    display: inline-block;
+    padding: 8px 20px;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background 0.3s;
+    font-size: 14px;
+    margin-right: 10px;
+}
+
+.button-reset {
+    background: #f44336;
+}
+
+.button-reset:hover {
+    background: #d32f2f;
+}
+
+.button-download {
+    background: #2196F3;
+}
+
+.button-download:hover {
+    background: #1976D2;
+}
+
+.button:disabled {
+    background: #cccccc;
+    cursor: not-allowed;
+}
+
+.action-buttons {
+    margin-top: 15px;
+}
