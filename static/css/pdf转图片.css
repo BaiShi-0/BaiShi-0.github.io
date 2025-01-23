@@ -1,0 +1,279 @@
+#app {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 20px;
+    min-height: 100vh;
+}
+
+.container {
+    display: -webkit-grid;
+    display: -moz-grid;
+    display: grid;
+    -webkit-grid-template-columns: 1fr 1fr;
+    -moz-grid-template-columns: 1fr 1fr;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+@supports not (display: grid) {
+    .container {
+        display: -webkit-flex;
+        display: -moz-flex;
+        display: flex;
+        -webkit-flex-wrap: wrap;
+        flex-wrap: wrap;
+    }
+
+    .left-panel,
+    .right-panel {
+        -webkit-flex: 1 1 400px;
+        flex: 1 1 400px;
+        margin: 10px;
+    }
+}
+
+.left-panel,
+.right-panel {
+    padding: 20px;
+    background: #f5f5f5;
+    border-radius: 8px;
+    min-height: 500px;
+    overflow-y: auto;
+    max-height: 80vh;
+}
+
+.right-panel {
+    position: sticky;
+    top: 20px;
+}
+
+.upload-container {
+    border: 2px dashed #ccc;
+    padding: 30px;
+    text-align: center;
+    margin: 20px 0;
+    background: white;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.upload-container:hover {
+    border-color: #4CAF50;
+    background: #f8f8f8;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.upload-container input[type="file"] {
+    display: none;
+}
+
+.upload-icon {
+    font-size: 48px;
+    color: #666;
+    margin-bottom: 15px;
+}
+
+.upload-text {
+    color: #666;
+    margin: 0;
+    font-size: 16px;
+}
+
+.upload-hint {
+    color: #999;
+    font-size: 14px;
+    margin-top: 8px;
+}
+
+/* 添加动画效果 */
+@keyframes bounce {
+
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-5px);
+    }
+}
+
+.upload-container:hover .upload-icon {
+    animation: bounce 1s infinite;
+    color: #4CAF50;
+}
+
+.page-container {
+    background: white;
+    padding: 20px;
+    margin: 20px 0;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+.preview-image {
+    max-width: 100%;
+    margin: 10px 0;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.download-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    margin: 15px 0 5px 0;
+}
+
+.size-input-group {
+    display: flex;
+    align-items: center;
+    background: #f5f5f5;
+    padding: 5px 10px;
+    border-radius: 4px;
+    gap: 5px;
+    flex-wrap: wrap;
+}
+
+.size-input {
+    width: 60px;
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    text-align: center;
+    font-size: 14px;
+}
+
+.size-input:focus {
+    outline: none;
+    border-color: #4CAF50;
+}
+
+.size-label {
+    color: #666;
+    font-size: 14px;
+}
+
+.download-btn {
+    min-width: 120px;
+    display: inline-block;
+    padding: 10px 20px;
+    background: #4CAF50;
+    color: white;
+    text-decoration: none;
+    border-radius: 4px;
+    text-align: center;
+    -webkit-transition: all 0.3s;
+    -moz-transition: all 0.3s;
+    -o-transition: all 0.3s;
+    transition: all 0.3s;
+    cursor: pointer;
+    box-sizing: border-box;
+}
+
+.download-btn:hover {
+    background: #45a049;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
+    text-align: center;
+    color: #333;
+    margin-bottom: 30px;
+}
+
+@media print {
+
+    .upload-container,
+    .download-btn {
+        display: none;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .container {
+        grid-template-columns: 1fr;
+    }
+
+    .left-panel,
+    .right-panel {
+        max-height: none;
+    }
+
+    .right-panel {
+        position: static;
+    }
+
+    body {
+        padding: 10px;
+    }
+}
+
+.upload-container-active {
+    border-color: #4CAF50;
+    background: #f0f9f0;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(76, 175, 80, 0.2);
+}
+
+.file-info {
+    background: white;
+    padding: 15px;
+    margin: 10px 0;
+    border-radius: 8px;
+    display: none;
+    animation: fadeIn 0.3s ease;
+}
+
+.file-info.active {
+    display: block;
+}
+
+.file-name {
+    color: #333;
+    font-weight: 500;
+    margin: 0;
+    word-break: break-all;
+}
+
+.file-size {
+    color: #666;
+    font-size: 14px;
+    margin: 5px 0 0 0;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.reset-btn {
+    padding: 5px 10px;
+    background: #f0f0f0;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    color: #666;
+    transition: all 0.3s;
+}
+
+.reset-btn:hover {
+    background: #e0e0e0;
+    border-color: #999;
+}
