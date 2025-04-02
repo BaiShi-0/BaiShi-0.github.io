@@ -14,7 +14,7 @@ docker ps
 docker ps -a
 ```
 
-![屏幕截图](https://baishiblog.us.kg/img/%232-1.png)
+![屏幕截图](./img/%232-1.png)
 
 
 
@@ -24,7 +24,7 @@ docker ps -a
 docker images
 ```
 
-![image](https://baishiblog.us.kg/img/%232-2.png)
+![image](./img/%232-2.png)
 
 
 
