@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='UTF-8'?>
-<rss xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/" version="2.0"><channel><title>随记</title><link>https://baishiblog.dpdns.org/</link><description>听风 等雨</description><copyright>随记</copyright><docs>http://www.rssboard.org/rss-specification</docs><generator>python-feedgen</generator><image><url>./img/head.jpg</url><title>avatar</title><link>https://baishiblog.dpdns.org/</link></image><lastBuildDate>Wed, 02 Apr 2025 15:27:11 +0000</lastBuildDate><managingEditor>随记</managingEditor><ttl>60</ttl><webMaster>随记</webMaster><item><title>正则</title><link>https://baishiblog.dpdns.org//post/zheng-ze.html</link><description># 正则表达式
+<rss xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/" version="2.0"><channel><title>随记</title><link>https://baishiblog.dpdns.org/</link><description>听风 等雨</description><copyright>随记</copyright><docs>http://www.rssboard.org/rss-specification</docs><generator>python-feedgen</generator><image><url>./img/head.jpg</url><title>avatar</title><link>https://baishiblog.dpdns.org/</link></image><lastBuildDate>Wed, 02 Apr 2025 15:33:34 +0000</lastBuildDate><managingEditor>随记</managingEditor><ttl>60</ttl><webMaster>随记</webMaster><item><title>正则</title><link>https://baishiblog.dpdns.org//post/zheng-ze.html</link><description># 正则表达式
 
 Regular Expression,正则表达式，一种使用表达式的方式对字符串进行匹配的语法规则.
 
@@ -23,7 +23,7 @@ docker ps
 docker ps -a
 ```
 
-![屏幕截图](./img/%232-1.png)
+![屏幕截图](../img/%232-1.png)
 
 
 
@@ -33,7 +33,7 @@ docker ps -a
 docker images
 ```
 
-![image](./img/%232-2.png)
+![image](../img/%232-2.png)
 
 
 
