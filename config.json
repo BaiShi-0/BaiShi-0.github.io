@@ -1,7 +1,7 @@
 {
     "title": "随记",
     "subTitle": "听风 等雨",
-    "avatarUrl": "https://baishiblog.us.kg/img/head.jpg",
+    "avatarUrl": "./img/head.jpg",
     "startSite": "01/20/2025",
     "onePageListNum": 15,
     "commentLabelColor": "#006b75",
@@ -14,6 +14,6 @@
     "i18n": "CN",
     "bottomText": "> 转载请注明出处 <",
     "allHead": "<script src='https://blog.meekdai.com/Gmeek/plugins/GmeekVercount.js'></script>",
-    "homeUrl": "https://baishiblog.us.kg/",
+    "homeUrl": "https://baishiblog.dpdns.org/",
     "GMEEK_VERSION": "last"
 }
