@@ -1,5 +1,63 @@
 <?xml version='1.0' encoding='UTF-8'?>
-<rss xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/" version="2.0"><channel><title>随记</title><link>https://baishiblog.dpdns.org/</link><description>听风 等雨</description><copyright>随记</copyright><docs>http://www.rssboard.org/rss-specification</docs><generator>python-feedgen</generator><image><url>./img/head.jpg</url><title>avatar</title><link>https://baishiblog.dpdns.org/</link></image><lastBuildDate>Wed, 02 Apr 2025 15:50:10 +0000</lastBuildDate><managingEditor>随记</managingEditor><ttl>60</ttl><webMaster>随记</webMaster><item><title>正则</title><link>https://baishiblog.dpdns.org//post/zheng-ze.html</link><description># 正则表达式
+<rss xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/" version="2.0"><channel><title>随记</title><link>https://baishiblog.dpdns.org/</link><description>听风 等雨</description><copyright>随记</copyright><docs>http://www.rssboard.org/rss-specification</docs><generator>python-feedgen</generator><image><url>./img/head.jpg</url><title>avatar</title><link>https://baishiblog.dpdns.org/</link></image><lastBuildDate>Wed, 30 Jul 2025 06:27:37 +0000</lastBuildDate><managingEditor>随记</managingEditor><ttl>60</ttl><webMaster>随记</webMaster><item><title>Poetry管理工具</title><link>https://baishiblog.dpdns.org//post/Poetry-guan-li-gong-ju.html</link><description>[toc]
+
+# poetry
+
+
+
+## 配置
+
+### 查看所有配置
+
+```bash
+poetry config --list
+```
+
+### 虚拟环境在项目目录中
+
+配置全局设置，让虚拟环境存储在项目目录内：
+
+```bash
+poetry config virtualenvs.in-project true
+```
+
+### 配置镜像源
+
+```bash
+poetry config pypi-mirror https://pypi.tuna.tsinghua.edu.cn/simple
+```
+
+
+
+## 初始化
+
+### 创建新项目
+
+```bash
+poetry new my-project
+```
+
+会生成如下的目录结构：
+
+```text
+my-project/
+├── README.md        # 项目说明
+├── pyproject.toml   # 项目配置
+├── my_project/      # 代码目录
+│   └── __init__.py
+└── tests/           # 测试目录
+    └── __init__.py
+
+```
+
+### 使用现有项目
+
+```bash
+cd existed-project
+poetry init
+```
+
+先进入项目所在目录，再初始化；之后会通过命令行交互配置项目 `pyproject.toml` 。</description><guid isPermaLink="true">https://baishiblog.dpdns.org//post/Poetry-guan-li-gong-ju.html</guid><pubDate>Wed, 30 Jul 2025 06:27:07 +0000</pubDate></item><item><title>正则</title><link>https://baishiblog.dpdns.org//post/zheng-ze.html</link><description># 正则表达式
 
 Regular Expression,正则表达式，一种使用表达式的方式对字符串进行匹配的语法规则.
 
