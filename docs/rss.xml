@@ -1,5 +1,49 @@
 <?xml version='1.0' encoding='UTF-8'?>
-<rss xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/" version="2.0"><channel><title>随记</title><link>https://baishiblog.dpdns.org/</link><description>听风 等雨</description><copyright>随记</copyright><docs>http://www.rssboard.org/rss-specification</docs><generator>python-feedgen</generator><image><url>./img/head.jpg</url><title>avatar</title><link>https://baishiblog.dpdns.org/</link></image><lastBuildDate>Tue, 12 Aug 2025 08:23:28 +0000</lastBuildDate><managingEditor>随记</managingEditor><ttl>60</ttl><webMaster>随记</webMaster><item><title>tmux常用命令及快捷方式</title><link>https://baishiblog.dpdns.org//post/tmux-chang-yong-ming-ling-ji-kuai-jie-fang-shi.html</link><description>## 安装
+<rss xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/" version="2.0"><channel><title>随记</title><link>https://baishiblog.dpdns.org/</link><description>听风 等雨</description><copyright>随记</copyright><docs>http://www.rssboard.org/rss-specification</docs><generator>python-feedgen</generator><image><url>./img/head.jpg</url><title>avatar</title><link>https://baishiblog.dpdns.org/</link></image><lastBuildDate>Thu, 21 Aug 2025 06:35:33 +0000</lastBuildDate><managingEditor>随记</managingEditor><ttl>60</ttl><webMaster>随记</webMaster><item><title>Pyinstaller 使用</title><link>https://baishiblog.dpdns.org//post/Pyinstaller%20-shi-yong.html</link><description>[toc]
+
+## 安装
+
+**注意安装环境**
+
+```bash
+pip install pyinstaller
+```
+
+## 基本使用
+
+1. 直接生成可执行文件：
+
+```bash
+pyinstaller script.py
+```
+
+2. 分步：
+
+   - 先生成spec配置，生成后可在文件中修改配置
+
+     ```bash
+      pyi-makespec script.py
+     ```
+
+   - 根据配置生成可执行文件
+
+     ```bash
+     pyinstaller script.spec
+     ```
+
+
+
+## 参数
+
+| 参数                        | 作用                                   |
+| --------------------------- | -------------------------------------- |
+| -h                          | 该模块的help信息                       |
+| -F                          | 生成一个可执行文件(生成单文件)         |
+| -D  --ondir                 | 生成一个目录作为可执行文件(生成多文件) |
+| -w  --windowed  --noconsole | 运行生成的exe时，不显示命令行窗口      |
+| -i  --icon                  | 指定可执行文件的icon图标路径           |
+| –distpath                   | 可执行文件的路径                       |
+| -n  --name                  | 对可执行文件命名                       |。</description><guid isPermaLink="true">https://baishiblog.dpdns.org//post/Pyinstaller%20-shi-yong.html</guid><pubDate>Thu, 21 Aug 2025 06:34:46 +0000</pubDate></item><item><title>tmux常用命令及快捷方式</title><link>https://baishiblog.dpdns.org//post/tmux-chang-yong-ming-ling-ji-kuai-jie-fang-shi.html</link><description>## 安装
 
 ### Ubuntu
 
