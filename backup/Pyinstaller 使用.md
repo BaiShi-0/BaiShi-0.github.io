@@ -1,5 +1,3 @@
-[toc]
-
 ## 安装
 
 **注意安装环境**
@@ -21,7 +19,7 @@ pyinstaller script.py
    - 先生成spec配置，生成后可在文件中修改配置
 
      ```bash
-      pyi-makespec script.py
+     pyi-makespec script.py
      ```
 
    - 根据配置生成可执行文件
