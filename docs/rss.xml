@@ -1,5 +1,184 @@
 <?xml version='1.0' encoding='UTF-8'?>
-<rss xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/" version="2.0"><channel><title>随记</title><link>https://baishiblog.dpdns.org/</link><description>听风 等雨</description><copyright>随记</copyright><docs>http://www.rssboard.org/rss-specification</docs><generator>python-feedgen</generator><image><url>./img/head.jpg</url><title>avatar</title><link>https://baishiblog.dpdns.org/</link></image><lastBuildDate>Thu, 21 Aug 2025 06:38:58 +0000</lastBuildDate><managingEditor>随记</managingEditor><ttl>60</ttl><webMaster>随记</webMaster><item><title>Pyinstaller 使用</title><link>https://baishiblog.dpdns.org//post/Pyinstaller%20-shi-yong.html</link><description>## 安装
+<rss xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/" version="2.0"><channel><title>随记</title><link>https://baishiblog.dpdns.org/</link><description>听风 等雨</description><copyright>随记</copyright><docs>http://www.rssboard.org/rss-specification</docs><generator>python-feedgen</generator><image><url>./img/head.jpg</url><title>avatar</title><link>https://baishiblog.dpdns.org/</link></image><lastBuildDate>Mon, 01 Sep 2025 09:25:42 +0000</lastBuildDate><managingEditor>随记</managingEditor><ttl>60</ttl><webMaster>随记</webMaster><item><title>上传并发布至博客园脚本</title><link>https://baishiblog.dpdns.org//post/shang-chuan-bing-fa-bu-zhi-bo-ke-yuan-jiao-ben.html</link><description>## 参考官方文档
+
+[MetaWeblog](https://rpc.cnblogs.com/metaweblog/ling-yuan)
+
+
+
+## 上传图片
+
+### 基础数据
+
+```python
+blog_id = 'blog_id'
+username = 'username'
+access_token = 'access_token'
+rpc_url = 'https://rpc.cnblogs.com/metaweblog/' + blog_id
+file_path = 'image path'
+```
+
+### 文件数据
+
+```python
+import mimetypes
+from xmlrpc.client import Binary
+
+mime_type, _ = mimetypes.guess_type(file_path)
+mime_type = 'application/octet-stream' if mime_type is None else mime_type
+with open(file_path, 'rb') as f:
+    image_data = f.read()
+file_data ={
+    'name': 'image name',
+    'type': mime_type,
+    'bits': Binary(image_data),
+}
+```
+
+### 上传
+
+```python
+from xmlrpc.client import ServerProxy
+
+# 上传
+server = ServerProxy(rpc_url)
+result = server.metaWeblog.newMediaObject(
+    blog_id,
+    username,
+    access_token,
+    struct,
+)
+
+# 解析结果
+if isinstance(result, dict) and 'url' in result:
+    img_url = result['url']
+```
+
+
+
+## 上传文章
+
+### 基础数据
+
+```python
+blog_id = 'blog_id'
+username = 'username'
+access_token = 'access_token'
+rpc_url = 'https://rpc.cnblogs.com/metaweblog/' + blog_id
+blog_url = 'https://www.cnblogs.com/' + blog_id
+file_path = 'markdown path'
+with open(file_path, 'r', encoding='utf-8') as f:
+    content = f.read()
+```
+
+### 解析并上传文档中图片
+
+==这里未考虑文档中网络图片的情况，还可以优化==
+
+```python
+import re
+
+patterns = [
+    r'!\[.*?\]\((.*?)\)',
+    r'&lt;img.*?src=\'(.*?)\'.*?&gt;',
+]
+image_paths = {}
+for pattern in patterns:
+    image_paths |= {
+        path: os.path.normpath(os.path.join(os.path.dirname(markdown_path), path))
+        for path in re.findall(pattern, content)
+    }
+```
+
+上传参考[上传图片](#上传图片)部分
+
+```python
+# 上传后得到字典 img_path-&gt;img_url
+# 以下内容只是例子
+image_urls = {
+    'C:\\test.png': 'http://xxx.xxx.xxx/1234567890.jpg'
+}
+```
+
+
+
+### 解析 YAML Front Matter 获取
+
+[YAML Front Matter](https://support.typoraio.cn/YAML/) - Typora Support
+
+```python
+# 根据内容分割
+parts = content.split('---', 2)
+
+# 解析YAML Front Matter
+front_matter_content = parts[1].strip()
+markdown_content = parts[2].strip()
+front_matter = yaml.safe_load(front_matter_content)
+if front_matter is None:
+    front_matter = {}
+
+# 构建Post结构体字典
+post_args = {}
+# 标题
+post_args['title'] = front_matter.get('title', Path(file_path).stem)
+# 正文
+post_args['description'] = markdown_content
+# 当前时间
+post_args['dateCreated'] = datetime.now()
+# 分类
+categories = front_matter.get('categories', [])
+if isinstance(categories, list):
+    post_args['categories'] = categories
+elif isinstance(categories, str):
+    post_args['categories'] = [categories]
+else:
+    post_args['categories'] = []
+if '[Markdown]' in post_args['categories']:       # 这里注意，如果上传格式是Markdown不是HTML，需要在分类中添加'[Markdown]'
+    post_args['categories'].remove('[Markdown]')
+post_args['categories'].insert(0, '[Markdown]')
+# 标签 (tags/keywords -&gt; mt_keywords)
+tags = front_matter.get('tags', [])
+keywords = front_matter.get('keywords', '')
+if tags:
+    if isinstance(tags, list):
+        post_args['mt_keywords'] = ', '.join(tags)
+    elif isinstance(tags, str):
+        post_args['mt_keywords'] = tags
+elif keywords:
+    post_args['mt_keywords'] = keywords
+# 其他可选的metaweblog字段
+slug = front_matter.get('slug') or front_matter.get('wp_slug')
+if slug:
+    post_args['wp_slug'] = slug
+if 'mt_allow_comments' in front_matter:
+    post_args['mt_allow_comments'] = front_matter['mt_allow_comments']
+if 'mt_allow_pings' in front_matter:
+    post_args['mt_allow_pings'] = front_matter['mt_allow_pings']
+if 'mt_excerpt' in front_matter:
+    post_args['mt_excerpt'] = front_matter['mt_excerpt']
+if 'mt_text_more' in front_matter:
+    post_args['mt_text_more'] = front_matter['mt_text_more']
+
+```
+
+### 上传
+
+#### 修改文档中的图片路径
+
+```python
+for k, v in img_path.items():
+    post_args['description'] = post_args['description'].replace(
+        k, image_urls.get(v, v)
+    )
+```
+
+#### 上传文章
+
+```python
+post_id = self.server.metaWeblog.newPost(
+            blog_id, username, access_token, post_args, True
+        )
+return blog_url + '/p/' + str(post_id)
+```。</description><guid isPermaLink="true">https://baishiblog.dpdns.org//post/shang-chuan-bing-fa-bu-zhi-bo-ke-yuan-jiao-ben.html</guid><pubDate>Mon, 01 Sep 2025 09:25:14 +0000</pubDate></item><item><title>Pyinstaller 使用</title><link>https://baishiblog.dpdns.org//post/Pyinstaller%20-shi-yong.html</link><description>## 安装
 
 **注意安装环境**
 
