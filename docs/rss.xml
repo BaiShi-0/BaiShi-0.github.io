@@ -1,2 +1,677 @@
 <?xml version='1.0' encoding='UTF-8'?>
-<rss xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/" version="2.0"><channel><title>随记</title><link>https://baishiblog.dpdns.org/</link><description>偷得浮生半日闲</description><copyright>随记</copyright><docs>http://www.rssboard.org/rss-specification</docs><generator>python-feedgen</generator><image><url>./img/head.jpg</url><title>avatar</title><link>https://baishiblog.dpdns.org/</link></image><lastBuildDate>Mon, 27 Apr 2026 17:14:25 +0000</lastBuildDate><managingEditor>随记</managingEditor><ttl>60</ttl><webMaster>随记</webMaster></channel></rss>
+<rss xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/" version="2.0"><channel><title>随记</title><link>https://baishi.qzz.io</link><description>偷得浮生半日闲</description><copyright>随记</copyright><docs>http://www.rssboard.org/rss-specification</docs><generator>python-feedgen</generator><image><url>./img/head.jpg</url><title>avatar</title><link>https://baishi.qzz.io</link></image><lastBuildDate>Tue, 28 Apr 2026 07:42:01 +0000</lastBuildDate><managingEditor>随记</managingEditor><ttl>60</ttl><webMaster>随记</webMaster><item><title>Docker搭建RustDesk中继服务</title><link>https://baishi.qzz.io/post/Docker-da-jian-RustDesk-zhong-ji-fu-wu.html</link><description>## 服务端准备
+
+### 前提准备
+
+- 有公网ip的服务器
+- 服务器开放端口
+  - TCP: 21115-21119
+  - UDP: 21116
+
+### Docker安装
+
+网上教程很多就不多赘述了~
+
+### 启动服务
+
+创建文件夹，用于存放数据:
+
+```bash
+cd ~
+mkdir RustDesk
+cd RustDesk
+```
+
+拉取镜像:
+
+```bash
+sudo docker image pull rustdesk/rustdesk-server
+```
+
+运行服务：
+
+```bash
+sudo docker run --name hbbs -p 21115:21115 -p 21116:21116 -p 21116:21116/udp -p 21118:21118 -v ./data:/root -td --net=host rustdesk/rustdesk-server hbbs
+```
+
+```bash
+sudo docker run --name hbbr -p 21117:21117 -p 21119:21119 -v ./data:/root -td --net=host rustdesk/rustdesk-server hbbr
+```
+
+### 检查服务
+
+检查服务是否启动成功:
+
+```bash
+docker ps -a
+```
+
+![image-20250901165831654](https://img2024.cnblogs.com/blog/3293182/202509/3293182-20250901171348822-1499048880.png)
+
+检查文件是否成功创建:
+
+```bash
+cd data &amp;&amp; ls -l
+```
+
+![image-20250901170119697](https://img2024.cnblogs.com/blog/3293182/202509/3293182-20250901171349471-13048053.png)
+
+其中==id_ed25519.pub==就是密钥
+
+## 配置客户端
+
+获取密钥:
+
+```bash
+cat id_ed25519.pub
+```
+
+得到输出后**复制**后续有用： ==cSfm2yB......== 
+
+安装客户端：[GitHub: rustdesk](https://github.com/rustdesk/rustdesk)
+
+以Windows为例子：
+
+![image-20250901170746723](https://img2024.cnblogs.com/blog/3293182/202509/3293182-20250901171349779-1098011943.png)
+
+![image-20250901170914692](https://img2024.cnblogs.com/blog/3293182/202509/3293182-20250901171350074-2009941852.png)
+
+填入对应内容:
+
+- ID服务器: `ip:21116`
+- 中继服务器: `ip:21117`
+- API服务器: `http://ip:21118`
+- key: `上边复制的密钥`
+
+之后点`确认`即可
+
+## 注意
+
+想要多个客户端直接连接，需要配置每一个客户端。</description><guid isPermaLink="true">https://baishi.qzz.io/post/Docker-da-jian-RustDesk-zhong-ji-fu-wu.html</guid><pubDate>Mon, 01 Sep 2025 09:25:49 +0000</pubDate></item><item><title>上传并发布至博客园脚本</title><link>https://baishi.qzz.io/post/shang-chuan-bing-fa-bu-zhi-bo-ke-yuan-jiao-ben.html</link><description>## 参考官方文档
+
+[MetaWeblog](https://rpc.cnblogs.com/metaweblog/ling-yuan)
+
+
+
+## 上传图片
+
+### 基础数据
+
+```python
+blog_id = 'blog_id'
+username = 'username'
+access_token = 'access_token'
+rpc_url = 'https://rpc.cnblogs.com/metaweblog/' + blog_id
+file_path = 'image path'
+```
+
+### 文件数据
+
+```python
+import mimetypes
+from xmlrpc.client import Binary
+
+mime_type, _ = mimetypes.guess_type(file_path)
+mime_type = 'application/octet-stream' if mime_type is None else mime_type
+with open(file_path, 'rb') as f:
+    image_data = f.read()
+file_data ={
+    'name': 'image name',
+    'type': mime_type,
+    'bits': Binary(image_data),
+}
+```
+
+### 上传
+
+```python
+from xmlrpc.client import ServerProxy
+
+# 上传
+server = ServerProxy(rpc_url)
+result = server.metaWeblog.newMediaObject(
+    blog_id,
+    username,
+    access_token,
+    struct,
+)
+
+# 解析结果
+if isinstance(result, dict) and 'url' in result:
+    img_url = result['url']
+```
+
+
+
+## 上传文章
+
+### 基础数据
+
+```python
+blog_id = 'blog_id'
+username = 'username'
+access_token = 'access_token'
+rpc_url = 'https://rpc.cnblogs.com/metaweblog/' + blog_id
+blog_url = 'https://www.cnblogs.com/' + blog_id
+file_path = 'markdown path'
+with open(file_path, 'r', encoding='utf-8') as f:
+    content = f.read()
+```
+
+### 解析并上传文档中图片
+
+==这里未考虑文档中网络图片的情况，还可以优化==
+
+```python
+import re
+
+patterns = [
+    r'!\[.*?\]\((.*?)\)',
+    r'&lt;img.*?src=\'(.*?)\'.*?&gt;',
+]
+image_paths = {}
+for pattern in patterns:
+    image_paths |= {
+        path: os.path.normpath(os.path.join(os.path.dirname(markdown_path), path))
+        for path in re.findall(pattern, content)
+    }
+```
+
+上传参考[上传图片](#上传图片)部分
+
+```python
+# 上传后得到字典 img_path-&gt;img_url
+# 以下内容只是例子
+image_urls = {
+    'C:\\test.png': 'http://xxx.xxx.xxx/1234567890.jpg'
+}
+```
+
+
+
+### 解析 YAML Front Matter 获取
+
+[YAML Front Matter](https://support.typoraio.cn/YAML/) - Typora Support
+
+```python
+# 根据内容分割
+parts = content.split('---', 2)
+
+# 解析YAML Front Matter
+front_matter_content = parts[1].strip()
+markdown_content = parts[2].strip()
+front_matter = yaml.safe_load(front_matter_content)
+if front_matter is None:
+    front_matter = {}
+
+# 构建Post结构体字典
+post_args = {}
+# 标题
+post_args['title'] = front_matter.get('title', Path(file_path).stem)
+# 正文
+post_args['description'] = markdown_content
+# 当前时间
+post_args['dateCreated'] = datetime.now()
+# 分类
+categories = front_matter.get('categories', [])
+if isinstance(categories, list):
+    post_args['categories'] = categories
+elif isinstance(categories, str):
+    post_args['categories'] = [categories]
+else:
+    post_args['categories'] = []
+if '[Markdown]' in post_args['categories']:       # 这里注意，如果上传格式是Markdown不是HTML，需要在分类中添加'[Markdown]'
+    post_args['categories'].remove('[Markdown]')
+post_args['categories'].insert(0, '[Markdown]')
+# 标签 (tags/keywords -&gt; mt_keywords)
+tags = front_matter.get('tags', [])
+keywords = front_matter.get('keywords', '')
+if tags:
+    if isinstance(tags, list):
+        post_args['mt_keywords'] = ', '.join(tags)
+    elif isinstance(tags, str):
+        post_args['mt_keywords'] = tags
+elif keywords:
+    post_args['mt_keywords'] = keywords
+# 其他可选的metaweblog字段
+slug = front_matter.get('slug') or front_matter.get('wp_slug')
+if slug:
+    post_args['wp_slug'] = slug
+if 'mt_allow_comments' in front_matter:
+    post_args['mt_allow_comments'] = front_matter['mt_allow_comments']
+if 'mt_allow_pings' in front_matter:
+    post_args['mt_allow_pings'] = front_matter['mt_allow_pings']
+if 'mt_excerpt' in front_matter:
+    post_args['mt_excerpt'] = front_matter['mt_excerpt']
+if 'mt_text_more' in front_matter:
+    post_args['mt_text_more'] = front_matter['mt_text_more']
+
+```
+
+### 上传
+
+#### 修改文档中的图片路径
+
+```python
+for k, v in img_path.items():
+    post_args['description'] = post_args['description'].replace(
+        k, image_urls.get(v, v)
+    )
+```
+
+#### 上传文章
+
+```python
+post_id = self.server.metaWeblog.newPost(
+            blog_id, username, access_token, post_args, True
+        )
+return blog_url + '/p/' + str(post_id)
+```。</description><guid isPermaLink="true">https://baishi.qzz.io/post/shang-chuan-bing-fa-bu-zhi-bo-ke-yuan-jiao-ben.html</guid><pubDate>Mon, 01 Sep 2025 09:25:14 +0000</pubDate></item><item><title>Pyinstaller 使用</title><link>https://baishi.qzz.io/post/Pyinstaller%20-shi-yong.html</link><description>## 安装
+
+**注意安装环境**
+
+```bash
+pip install pyinstaller
+```
+
+## 基本使用
+
+1. 直接生成可执行文件：
+
+```bash
+pyinstaller script.py
+```
+
+2. 分步：
+
+   - 先生成spec配置，生成后可在文件中修改配置
+
+     ```bash
+     pyi-makespec script.py
+     ```
+
+   - 根据配置生成可执行文件
+
+     ```bash
+     pyinstaller script.spec
+     ```
+
+
+
+## 参数
+
+| 参数                        | 作用                                   |
+| --------------------------- | -------------------------------------- |
+| -h                          | 该模块的help信息                       |
+| -F                          | 生成一个可执行文件(生成单文件)         |
+| -D  --ondir                 | 生成一个目录作为可执行文件(生成多文件) |
+| -w  --windowed  --noconsole | 运行生成的exe时，不显示命令行窗口      |
+| -i  --icon                  | 指定可执行文件的icon图标路径           |
+| –distpath                   | 可执行文件的路径                       |
+| -n  --name                  | 对可执行文件命名                       |。</description><guid isPermaLink="true">https://baishi.qzz.io/post/Pyinstaller%20-shi-yong.html</guid><pubDate>Thu, 21 Aug 2025 06:34:46 +0000</pubDate></item><item><title>tmux常用命令及快捷方式</title><link>https://baishi.qzz.io/post/tmux-chang-yong-ming-ling-ji-kuai-jie-fang-shi.html</link><description>## 安装
+
+### Ubuntu
+
+```bash
+sudo apt-get install tmux
+```
+
+ ### CentOS
+```bash
+sudo yum install tmux
+```
+
+### Mac
+```bash
+brew install tmux
+```
+
+
+
+## 常用命令及快捷键
+
+### 查看所有会话
+
+```bash
+tmux ls
+```
+
+**快捷键：**`Ctrl+b s`
+
+### 新建窗口
+
+```bash
+tmux new -s &lt;session-name&gt;
+```
+
+### 重命名会话
+
+```bash
+tmux rename-session -t &lt;old-name&gt; &lt;new-name&gt;
+```
+
+**快捷键：**`Ctrl+b $`
+
+### 分离会话
+
+```bash
+tmux detach  或者使用  exit(关闭窗口)
+```
+
+**快捷键：**`Ctrl+b d`
+
+### 重新连接会话
+
+```bash
+tmux attach -t &lt;session-name&gt;
+```
+
+```bash
+tmux at -t &lt;session-name&gt;
+```
+
+### 平铺当前窗格
+
+**快捷键：**`Ctrl+b z` (再次点击恢复)
+
+### 杀死会话
+
+```bash
+tmux kill-session -t &lt;session-name&gt;
+```
+
+### 切换会话
+
+```bash
+tmux switch -t &lt;session-name&gt;
+```
+
+### 划分上下两个窗格
+
+```bash
+tmux split
+```
+
+**快捷键：**`Ctrl+b '`
+
+### 划分左右两个窗格
+
+```bash
+tmux split -h
+```
+
+**快捷键：**`Ctrl+b %`
+
+### 光标切换到其他窗格
+
+```bash
+tmux select-pane -U
+tmux select-pane -D
+tmux select-pane -L
+tmux select-pane -R
+```
+
+**快捷键：**`Ctrl+b ↑/↓/←/→` （方向键 上下左右）
+
+
+
+## 常用快捷键
+
+先按下`Ctrl+b`，再按下以下键后对应功能生效
+
+### 系统操作
+
+| 按键   | 效果                                                         |
+| ------ | ------------------------------------------------------------ |
+| ?      | 列出所有快捷键；按q返回                                      |
+| d      | 脱离当前会话；这样可以暂时返回Shell界面，输入tmux attach能够重新进入之前的会话 |
+| D      | 选择要脱离的会话；在同时开启了多个会话时使用                 |
+| Ctrl+z | 挂起当前会话                                                 |
+| r      | 强制重绘未脱离的会话                                         |
+| s      | 选择并切换会话；在同时开启了多个会话时使用                   |
+| :      | 进入命令行模式；此时可以输入支持的命令，例如kill-server可以关闭服务器 |
+| [      | 进入复制模式；此时的操作与vi/emacs相同，按q/Esc退出          |
+| ~      | 列出提示信息缓存；其中包含了之前tmux返回的各种提示信息       |
+
+### 窗口操作
+
+| 按键   | 效果                                 |
+| ------ | ------------------------------------ |
+| c      | 创建新窗口                           |
+| &amp;      | 关闭当前窗口                         |
+| 数字键 | 切换至指定窗口                       |
+| p      | 切换至上一窗口                       |
+| n      | 切换至下一窗口                       |
+| l      | 在前后两个窗口间互相切换             |
+| w      | 通过窗口列表切换窗口                 |
+| ,      | 重命名当前窗口；这样便于识别         |
+| .      | 修改当前窗口编号；相当于窗口重新排序 |
+| f      | 在所有窗口中查找指定文本             |
+
+### 面板操作
+
+| 按键        | 效果                                                         |
+| ----------- | ------------------------------------------------------------ |
+| ”           | 将当前面板平分为上下两块                                     |
+| %           | 将当前面板平分为左右两块                                     |
+| x           | 关闭当前面板                                                 |
+| !           | 将当前面板置于新窗口；即新建一个窗口，其中仅包含当前面板     |
+| Ctrl+方向键 | 以1个单元格为单位移动边缘以调整当前面板大小                  |
+| Alt+方向键  | 以5个单元格为单位移动边缘以调整当前面板大小                  |
+| Space       | 在预置的面板布局中循环切换；依次包括even-horizontal、even-vertical、main-horizontal、main-vertical、tiled |
+| q           | 显示面板编号                                                 |
+| o           | 在当前窗口中选择下一面板                                     |
+| 方向键      | 移动光标以选择面板                                           |
+| {           | 向前置换当前面板                                             |
+| }           | 向后置换当前面板                                             |
+| Alt+o       | 逆时针旋转当前窗口的面板                                     |
+| Ctrl+o      | 顺时针旋转当前窗口的面板                                     |。</description><guid isPermaLink="true">https://baishi.qzz.io/post/tmux-chang-yong-ming-ling-ji-kuai-jie-fang-shi.html</guid><pubDate>Tue, 12 Aug 2025 08:22:56 +0000</pubDate></item><item><title>Poetry管理工具</title><link>https://baishi.qzz.io/post/Poetry-guan-li-gong-ju.html</link><description>## 配置
+
+### 查看所有配置
+
+```bash
+poetry config --list
+```
+
+### 虚拟环境在项目目录中
+
+配置全局设置，让虚拟环境存储在项目目录内：
+
+```bash
+poetry config virtualenvs.in-project true
+```
+
+### 配置镜像源
+
+```bash
+poetry config pypi-mirror https://pypi.tuna.tsinghua.edu.cn/simple
+```
+
+
+
+## 初始化
+
+### 创建新项目
+
+```bash
+poetry new my-project
+```
+
+会生成如下的目录结构：
+
+```text
+my-project/
+├── README.md        # 项目说明
+├── pyproject.toml   # 项目配置
+├── my_project/      # 代码目录
+│   └── __init__.py
+└── tests/           # 测试目录
+    └── __init__.py
+
+```
+
+### 使用现有项目
+
+```bash
+cd existed-project
+poetry init
+```
+
+先进入项目所在目录，再初始化；之后会通过命令行交互配置项目 `pyproject.toml` 。</description><guid isPermaLink="true">https://baishi.qzz.io/post/Poetry-guan-li-gong-ju.html</guid><pubDate>Wed, 30 Jul 2025 06:27:07 +0000</pubDate></item><item><title>正则</title><link>https://baishi.qzz.io/post/zheng-ze.html</link><description># 正则表达式
+
+Regular Expression,正则表达式，一种使用表达式的方式对字符串进行匹配的语法规则.
+
+正则的优点:速度快，效率高，准确性高
+正则的缺点:新手上手难度有点儿高。</description><guid isPermaLink="true">https://baishi.qzz.io/post/zheng-ze.html</guid><pubDate>Tue, 11 Feb 2025 12:34:20 +0000</pubDate></item><item><title>图片混合绘制</title><link>https://baishi.qzz.io/post/tu-pian-hun-he-hui-zhi.html</link><description>`Gmeek-html&lt;div id='app'&gt;&lt;link rel='stylesheet' href='../css/图片混合绘制.css'&gt;&lt;h1&gt;图片混合绘制工具&lt;/h1&gt;&lt;div class='controls'&gt;&lt;div class='file-upload'&gt;&lt;label&gt;&lt;input type='file' id='image1' accept='image/*'&gt;&lt;span&gt;选择背景图片&lt;/span&gt;&lt;/label&gt;&lt;span class='file-name' id='fileName1'&gt;未选择文件&lt;/span&gt;&lt;/div&gt;&lt;div class='file-upload'&gt;&lt;label&gt;&lt;input type='file' id='image2' accept='image/*'&gt;&lt;span&gt;选择绘制图片&lt;/span&gt;&lt;/label&gt;&lt;span class='file-name' id='fileName2'&gt;未选择文件&lt;/span&gt;&lt;/div&gt;&lt;div class='brush-control'&gt;&lt;label&gt;画笔大小：&lt;/label&gt;&lt;input type='range' id='brushSize' min='1' max='50' value='15'&gt;&lt;span class='brush-size-value' id='brushSizeValue'&gt;15px&lt;/span&gt;&lt;/div&gt;&lt;div class='action-buttons'&gt;&lt;button class='button button-reset' id='resetButton'&gt;重置画布&lt;/button&gt;&lt;button class='button button-download' id='downloadButton' disabled&gt;下载结果&lt;/button&gt;&lt;/div&gt;&lt;/div&gt;&lt;div style='position: relative;'&gt;&lt;canvas id='canvas' width='800' height='600'&gt;&lt;/canvas&gt;&lt;div id='cursor'&gt;&lt;/div&gt;&lt;/div&gt;&lt;script src='../js/图片混合绘制.js'&gt;&lt;/script&gt;&lt;/div&gt;`
+
+&gt; [!IMPORTANT]
+&gt; 该工具仅作学习用。</description><guid isPermaLink="true">https://baishi.qzz.io/post/tu-pian-hun-he-hui-zhi.html</guid><pubDate>Thu, 23 Jan 2025 09:20:40 +0000</pubDate></item><item><title>pdf转图片工具</title><link>https://baishi.qzz.io/post/pdf-zhuan-tu-pian-gong-ju.html</link><description>`Gmeek-html&lt;div id='app'&gt;&lt;link rel='stylesheet' href='../css/pdf转图片.css'&gt;&lt;h1&gt;PDF转图片工具&lt;/h1&gt;&lt;div class='container'&gt;&lt;div class='left-panel'&gt;&lt;h2&gt;PDF处理&lt;/h2&gt;&lt;div class='upload-container' onclick='document.getElementById('pdfFile').click()'&gt;&lt;input type='file'id='pdfFile' accept='.pdf'&gt;&lt;div class='upload-icon'&gt;📄&lt;/div&gt;&lt;p class='upload-text'&gt;点击或拖拽PDF文件到这里&lt;/p&gt;&lt;p class='upload-hint'&gt;支持单个PDF文件&lt;/p&gt;&lt;/div&gt;&lt;div id='file-info' class='file-info'&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class='right-panel'&gt;&lt;h2&gt;预览&lt;/h2&gt;&lt;div id='preview'&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;&lt;script src='https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.11.338/pdf.min.js'&gt;&lt;/script&gt;&lt;script src='../js/pdf转图片.js'&gt;&lt;/script&gt;`。</description><guid isPermaLink="true">https://baishi.qzz.io/post/pdf-zhuan-tu-pian-gong-ju.html</guid><pubDate>Thu, 23 Jan 2025 08:33:49 +0000</pubDate></item><item><title>Docker 使用</title><link>https://baishi.qzz.io/post/Docker%20-shi-yong.html</link><description># 查看
+
+## 查看运行中容器
+
+```bash
+docker ps
+```
+
+
+
+## 查看所有容器
+
+```bash
+docker ps -a
+```
+
+![屏幕截图](../img/%232-1.png)
+
+
+
+## 查看镜像
+
+```bash
+docker images
+```
+
+![image](../img/%232-2.png)
+
+
+
+# 停止容器
+
+```bash
+docker stop 容器名/容器ID
+```
+
+
+
+# 进入容器
+
+## exec
+
+exec生成新终端，使用exit退出时也不会停止容器
+
+```bash
+docker exec -it 容器id /bin/bash
+```
+
+
+
+## attach
+
+attach进入正在运行的终端
+
+如果使用exit退出，容器会停止运行
+
+如果想退出容器但不想容器停止，则按住Ctrl+P+Q退出
+
+```bash
+docker attach 容器id
+```
+
+# 复制文件
+
+```bash
+docker cp 路径1 路径2
+```
+
+&gt; [!note]
+&gt;
+&gt; 路径1:  表示 *本地文件路径* 或 *容器中文件路径*    ./test.txt 或 容器名:文件路径
+&gt;
+&gt; 路径2:  表示 *本地文件夹路径* 或 *容器中文件夹路径* 
+
+
+
+# 删除
+
+## 删除容器
+
+```bash
+docker rm 容器名/容器ID
+```
+
+
+
+## 删除镜像
+
+```bash
+docker rmi 镜像名
+```
+
+
+
+# 查看容器日志
+
+```bash
+docker logs 容器名/容器ID
+```
+
+
+。</description><guid isPermaLink="true">https://baishi.qzz.io/post/Docker%20-shi-yong.html</guid><pubDate>Mon, 20 Jan 2025 13:00:50 +0000</pubDate></item><item><title>Docker 安装</title><link>https://baishi.qzz.io/post/Docker%20-an-zhuang.html</link><description>## 更新包管理器
+
+```bash
+sudo apt update
+```
+
+## 安装Docker的依赖包
+
+```bash
+sudo apt install apt-transport-https ca-certificates curl gnupg lsb-release
+```
+
+## 添加 Docker GPG 密钥：
+
+```bash
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
+```
+
+## 添加 Docker apt 仓库：
+
+```bash
+echo 'deb [arch=amd64 signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable' | sudo tee /etc/apt/sources.list.d/docker.list &gt; /dev/null
+```
+
+## 更新 apt 缓存：
+
+```bash
+sudo apt update
+```
+
+## 安装 Docker
+
+```bash
+sudo apt install docker-ce docker-ce-cli containerd.io
+```
+
+## 启动 Docker 服务：
+
+```bash
+sudo systemctl start docker
+```
+
+## 确认 Docker 已经正确安装：
+
+```bash
+sudo docker run hello-world
+```
+
+&gt;  这个命令会从 Docker Hub 上下载一个测试镜像并运行它。</description><guid isPermaLink="true">https://baishi.qzz.io/post/Docker%20-an-zhuang.html</guid><pubDate>Mon, 20 Jan 2025 12:38:00 +0000</pubDate></item></channel></rss>
