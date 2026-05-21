@@ -13,7 +13,7 @@
     ],
     "i18n": "CN",
     "bottomText": "> 转载请注明出处 <",
-    "allHead": "<script src='https://blog.meekdai.com/Gmeek/plugins/GmeekVercount.js'></script>",
+    "allHead": "<script src='https://blog.meekdai.com/Gmeek/plugins/GmeekVercount.js'></script><script async src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3811220850901059' crossorigin='anonymous'></script>",
     "homeUrl": "https://baishi.qzz.io",
     "GMEEK_VERSION": "last"
 }
